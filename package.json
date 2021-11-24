@@ -1,0 +1,20 @@
+{
+  "name": "intersection-observer",
+  "version": "1.0.0",
+  "description": "INtersection Observer ysing vanilla JS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "lite-server"
+  },
+  "keywords": [
+    "JavaScript",
+    "Intersection",
+    "Observer"
+  ],
+  "author": "Toushif UL Haque",
+  "license": "MIT",
+  "devDependencies": {
+    "lite-server": "^2.6.1"
+  }
+}
