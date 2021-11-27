@@ -18,6 +18,7 @@ customElements.define("toushif-tag", ToushifTag);
 //////////////////////////////
 let PAGE_NUMBER = 0,
     DELAY = 500,
+    QUERY = 'random',
     controller = new AbortController(),
     signal = controller.signal,
     parent = document.getElementById('wrapperArticles'),
@@ -63,14 +64,15 @@ function operation(value) {
     controller = new AbortController();
     signal = controller.signal;
     signal.onabort = callAbort;
-    loadData(value);
+    QUERY = value;
+    loadData(true);
 }
 
-async function loadData(query='random') {
+async function loadData(isSearch=false) {
     PAGE_NUMBER++;
     parent.style.opacity = '0.4'
     const res = await fetch(
-        `http://openlibrary.org/search.json?q=${query}&page=${PAGE_NUMBER}`,
+        `http://openlibrary.org/search.json?q=${QUERY}&page=${PAGE_NUMBER}`,
         { signal }
     ).catch(err => {
         console.log('err', err, err.name)
@@ -78,9 +80,10 @@ async function loadData(query='random') {
     if(!res) return;
     const resJson = await res.json();
     // console.log('RESPONSE', resJson);
-    parent.innerHTML = ''
+    isSearch ? parent.innerHTML = '' : ''
     parent.style.opacity = '1'
     render(resJson.docs)
+    return Promise.resolve(true)
 }
 
 function render(res) {
@@ -95,7 +98,7 @@ function render(res) {
                 eleDiv.classList.add('article-wrapper')
                 Object.assign(eleDiv.style, articleStyles);
                 if(count === min) {
-                    eleDiv.id = 'observe'
+                    eleDiv.style.marginBottom = '10rem'
                     intersectionObserve(eleDiv)
                 }
                 transition(eleDiv, count)
@@ -129,9 +132,15 @@ function transition(ele, count) {
 }
 
 function intersectionObserve(ele) {
-    const observe = new IntersectionObserver((entries, observer) => {
-        
+    const observer = new IntersectionObserver((entries, observer) => {
+        if (entries[0].isIntersecting) {
+            loadData().then(v => {
+                observer.disconnect()
+                ele.style.marginBottom = '1rem'
+            })
+        }
     })
+    observer.observe(ele)
 }
 
 window.onload = function (e) {
