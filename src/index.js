@@ -75,6 +75,8 @@ async function loadData(isSearch=false) {
         `http://openlibrary.org/search.json?q=${QUERY}&page=${PAGE_NUMBER}`,
         { signal }
     ).catch(err => {
+        parent.innerHTML = ''
+        parent.style.opacity = '1'
         console.log('err', err, err.name)
     });
     if(!res) return;
