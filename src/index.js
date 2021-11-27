@@ -6,14 +6,14 @@ class ToushifTag extends HTMLElement {
 
 customElements.define("toushif-tag", ToushifTag);
 
-const touTag = new ToushifTag();
-touTag.innerText = "Hey, there's another way to display content";
-Object.assign(touTag.style, {
-    color: "blue",
-    display: "block",
-});
-const section = document.getElementsByTagName("section")[0];
-section.insertBefore(touTag, section.firstElementChild);
+// const touTag = new ToushifTag();
+// touTag.innerText = "Hey, there's another way to display content";
+// Object.assign(touTag.style, {
+//     color: "blue",
+//     display: "block",
+// });
+// const section = document.getElementsByTagName("section")[0];
+// section.insertBefore(touTag, section.firstElementChild);
 
 //////////////////////////////
 let PAGE_NUMBER = 0,
@@ -31,7 +31,9 @@ const articleStyles = {
     background: '#ddd',
     border: '1px solid #333',
     borderRadius: '4px',
-    marginBottom: '1rem'
+    marginBottom: '1rem',
+    opacity: '0',
+    transition: '0.5s'
 }
 
 function callAbort(e) {
@@ -94,7 +96,10 @@ function render(res) {
                 Object.assign(eleDiv.style, articleStyles);
                 if(count === min) {
                     eleDiv.id = 'observe'
+                    intersectionObserve(eleDiv)
                 }
+                transition(eleDiv, count)
+                
                 const eleParId = document.createElement('p')
                 eleParId.innerHTML = '<b>ID:</b> ' + (doc.cover_edition_key || doc.cover_i || Math.floor(Math.random()*Math.pow(10, 8)))
                 const eleParTitle = document.createElement('p')
@@ -114,6 +119,19 @@ function render(res) {
             }
         }
     }
+}
+
+function transition(ele, count) {
+    setTimeout(() => {
+        ele.style.transform = `translateX(${count%2 === 0 ? 35 : -35}%)`
+        ele.style.opacity = '1'
+    }, DELAY);
+}
+
+function intersectionObserve(ele) {
+    const observe = new IntersectionObserver((entries, observer) => {
+        
+    })
 }
 
 window.onload = function (e) {
