@@ -20,8 +20,10 @@ let PAGE_NUMBER = 0,
     DELAY = 500,
     controller = new AbortController(),
     signal = controller.signal,
+    parent = document.getElementById('wrapperArticles'),
+    loading = false,
     timer;
-    
+
 const articleStyles = {
     width: '30rem',
     display: "block",
@@ -62,8 +64,9 @@ function operation(value) {
     loadData(value);
 }
 
-async function loadData(query) {
+async function loadData(query='random') {
     PAGE_NUMBER++;
+    parent.style.opacity = '0.4'
     const res = await fetch(
         `http://openlibrary.org/search.json?q=${query}&page=${PAGE_NUMBER}`,
         { signal }
@@ -72,20 +75,28 @@ async function loadData(query) {
     });
     if(!res) return;
     const resJson = await res.json();
-    console.log('RESPONSE', resJson);
+    // console.log('RESPONSE', resJson);
+    parent.innerHTML = ''
+    parent.style.opacity = '1'
     render(resJson.docs)
 }
 
 function render(res) {
     if(res.length) {
+        const min = Math.min(res.length, 10)
+        let count = 0;
         for(let i = 0; i < res.length; i++) {
             const doc = res[i];
-            if(doc.title && doc.author_name && !doc.title.toLowerCase().includes('undefined')) {
+            if(doc.title && doc.author_name && !doc.title.toLowerCase().includes('undefined') && count < min) {
+                count++
                 const eleDiv = document.createElement('div')
                 eleDiv.classList.add('article-wrapper')
                 Object.assign(eleDiv.style, articleStyles);
+                if(count === min) {
+                    eleDiv.id = 'observe'
+                }
                 const eleParId = document.createElement('p')
-                eleParId.innerHTML = '<b>ID:</b> ' + (doc.cover_edition_key || doc.cover_i || '0')
+                eleParId.innerHTML = '<b>ID:</b> ' + (doc.cover_edition_key || doc.cover_i || Math.floor(Math.random()*Math.pow(10, 8)))
                 const eleParTitle = document.createElement('p')
                 eleParTitle.innerHTML = '<b>Title:</b> ' + doc.title
                 const eleParAuth = document.createElement('p')
@@ -99,7 +110,6 @@ function render(res) {
 
                 eleDiv.innerHTML += eleParId.outerHTML + eleParTitle.outerHTML + eleParAuth.outerHTML + eleParDate.outerHTML + eleParPub.outerHTML + eleParType.outerHTML;
 
-                const parent = document.getElementById('wrapperArticles');
                 parent.appendChild(eleDiv);
             }
         }
