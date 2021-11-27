@@ -4,7 +4,13 @@
 
 body {
     overflow-x: hidden;
+    height:100vh;
+    margin:0;
+    display:flex; 
+    flex-direction:column; 
 }
+
+footer{ min-height:50px;  }
 nav {
     display: flex;
     flex-direction: row;
@@ -52,9 +58,31 @@ ul li, ul li ul {
     display: none;
 }
 
+/* Section styles */
+
+section {
+    text-align: center;
+}
+
+section input {
+    margin-bottom: 2rem;
+    width: 24rem;
+    border-radius: 3px;
+    height: 1.5rem;
+}
+
+div#wrapperArticles {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 footer {
+    margin-top:auto; 
     width: 100%;
     text-align: center;
     position: relative;
     bottom: 0;
+    background:PapayaWhip;
 }

@@ -21,6 +21,16 @@ let PAGE_NUMBER = 0,
     controller = new AbortController(),
     signal = controller.signal,
     timer;
+    
+const articleStyles = {
+    width: '30rem',
+    display: "block",
+    padding: '1rem',
+    background: '#ddd',
+    border: '1px solid #333',
+    borderRadius: '4px',
+    marginBottom: '1rem'
+}
 
 function callAbort(e) {
     console.log('Aborted!', e)
@@ -70,16 +80,10 @@ function render(res) {
     if(res.length) {
         for(let i = 0; i < res.length; i++) {
             const doc = res[i];
-            if(doc.title && doc.author_name && !doc.title.includes('Undefined')) {
+            if(doc.title && doc.author_name && !doc.title.toLowerCase().includes('undefined')) {
                 const eleDiv = document.createElement('div')
                 eleDiv.classList.add('article-wrapper')
-                Object.assign(eleDiv.style, {
-                    display: "block",
-                    padding: '1rem',
-                    backgroud: '#ddd',
-                    border: '1px solid #333',
-                    borderRadius: '4px'
-                });
+                Object.assign(eleDiv.style, articleStyles);
                 const eleParId = document.createElement('p')
                 eleParId.innerHTML = '<b>ID:</b> ' + (doc.cover_edition_key || doc.cover_i || '0')
                 const eleParTitle = document.createElement('p')
