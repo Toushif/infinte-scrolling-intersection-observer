@@ -19,6 +19,7 @@ customElements.define("toushif-tag", ToushifTag);
 let PAGE_NUMBER = 0,
     DELAY = 500,
     QUERY = 'random',
+    API = 'http://openlibrary.org/search.json', //not wokring over https network
     controller = new AbortController(),
     signal = controller.signal,
     parent = document.getElementById('wrapperArticles'),
@@ -72,7 +73,7 @@ async function loadData(isSearch=false) {
     PAGE_NUMBER++;
     parent.style.opacity = '0.4'
     const res = await fetch(
-        `http://openlibrary.org/search.json?q=${QUERY}&page=${PAGE_NUMBER}`,
+        `${API}?q=${QUERY}&page=${PAGE_NUMBER}`,
         { signal }
     ).catch(err => {
         parent.innerHTML = ''
