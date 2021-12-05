@@ -146,6 +146,4 @@ function intersectionObserve(ele) {
     observer.observe(ele)
 }
 
-window.onload = function (e) {
-    loadData();
-};
+window.onload = () => loadData();
