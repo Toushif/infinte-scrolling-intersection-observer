@@ -10,6 +10,7 @@ body {
     flex-direction:column; 
 }
 
+/* Nav header menu styles */
 nav {
     display: flex;
     flex-direction: row;
