@@ -10,7 +10,6 @@ body {
     flex-direction:column; 
 }
 
-footer{ min-height:50px;  }
 nav {
     display: flex;
     flex-direction: row;
@@ -79,6 +78,7 @@ div#wrapperArticles {
 }
 
 footer {
+    min-height:50px;
     margin-top:auto; 
     width: 100%;
     text-align: center;
